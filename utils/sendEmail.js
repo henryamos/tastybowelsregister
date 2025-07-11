@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-async function sendConfirmationEmail(to, firstName) {
+async function sendConfirmationEmail(to, firstName, phoneNumber = '') {
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -209,6 +209,9 @@ async function sendConfirmationEmail(to, firstName) {
             </div>
             <div style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #C8E6C9;">
               <strong style="color: #2E7D32; width: 120px; display: inline-block;">Email:</strong> ${to}
+            </div>
+            <div style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #C8E6C9;">
+              <strong style="color: #2E7D32; width: 120px; display: inline-block;">Phone:</strong> ${phoneNumber}
             </div>
             <div style="margin: 10px 0; padding: 8px 0;">
               <strong style="color: #2E7D32; width: 120px; display: inline-block;">Status:</strong> <span class="highlight">Confirmed</span>

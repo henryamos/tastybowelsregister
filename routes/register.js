@@ -5,9 +5,9 @@ import sendConfirmationEmail from "../utils/sendEmail.js";
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  const { firstName, lastName, telegramHandle, email } = req.body;
+  const { firstName, lastName, telegramHandle, email, phoneNumber } = req.body;
 
-  if (!firstName || !lastName || !telegramHandle || !email) {
+  if (!firstName || !lastName || !telegramHandle || !email || !phoneNumber) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
@@ -17,9 +17,9 @@ router.post("/register", async (req, res) => {
       return res.status(409).json({ message: "You have already registered." });
     }
 
-    const participant = await Participant.create({ firstName, lastName, telegramHandle, email });
+    const participant = await Participant.create({ firstName, lastName, telegramHandle, email, phoneNumber });
 
-    await sendConfirmationEmail(email, firstName);
+    await sendConfirmationEmail(email, firstName, phoneNumber);
 
     res.status(201).json({ message: "Registration successful!" });
   } catch (error) {

@@ -5,6 +5,7 @@ const participantSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   telegramHandle: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  phoneNumber: { type: String, required: true },
   registeredAt: { type: Date, default: Date.now }
 });
 

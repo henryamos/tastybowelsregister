@@ -6,12 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docker:build": "docker build -t tasty-bowls-api .",
-    "docker:run": "docker run -p 5011:5011 tasty-bowls-api",
-    "docker:compose": "docker-compose up -d",
-    "docker:stop": "docker-compose down",
-    "healthcheck": "node healthcheck.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",

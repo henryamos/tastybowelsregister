@@ -7,7 +7,7 @@ A professional Node.js/Express API for managing cooking class registrations with
 - **User Registration** with comprehensive validation
 - **Professional Email Templates** with modern design
 - **MongoDB Integration** with Mongoose ODM
-- **Smart Port Management** with automatic fallback
+- **Railway-Ready Deployment** with automatic builds
 - **Graceful Shutdown** handling
 - **CORS Configuration** for cross-origin requests
 - **Error Handling** with detailed logging
@@ -154,10 +154,15 @@ npm test       # Run tests (placeholder)
 
 ## 🚀 Deployment
 
-### Railway / Heroku
-1. Connect your GitHub repository
-2. Set environment variables in the platform
-3. Deploy automatically on push
+### Railway (Recommended)
+1. Connect your GitHub repository to Railway
+2. Railway automatically detects Node.js and builds your app
+3. Set environment variables in Railway dashboard:
+   - `PORT` (Railway sets this automatically)
+   - `MONGO_URI`
+   - `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`
+   - `NODE_ENV=production`
+4. Deploy automatically on every push to main branch
 
 ### Manual Server
 1. Clone repository on server
@@ -175,6 +180,7 @@ npm test       # Run tests (placeholder)
 
 ## 🌟 Recent Improvements
 
+- ✅ **Railway-Ready Deployment**: Optimized for Railway platform
 - ✅ **Simple Port Configuration**: Clean, straightforward setup
 - ✅ **Graceful Shutdown**: Proper cleanup on exit
 - ✅ **Enhanced Error Handling**: Better error messages

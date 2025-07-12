@@ -61,8 +61,8 @@ router.get('/payment-details', securityCheck, (req, res) => {
   }
 });
 
-// GET /api/v1/payment-qr - Generate QR code dynamically
-router.get('/payment-qr', securityCheck, async (req, res) => {
+// GET /api/v1/payment-qr - Generate QR code dynamically (Public access)
+router.get('/payment-qr', async (req, res) => {
   try {
     // Get payment details from environment variables
     const bankName = process.env.BANK_NAME || "NATWEST";
@@ -110,7 +110,7 @@ router.get('/payment-qr', securityCheck, async (req, res) => {
   }
 });
 
-// GET /api/v1/payment-qr-data - Get QR code data as JSON (for debugging)
+// GET /api/v1/payment-qr-data - Get QR code data as JSON (Public access)
 router.get('/payment-qr-data', (req, res) => {
   try {
     const bankName = process.env.BANK_NAME || "NATWEST";

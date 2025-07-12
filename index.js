@@ -5,6 +5,7 @@ import cors from "cors";
 import { createServer } from 'http';
 
 import registerRoute from "./routes/register.js";
+import paymentRoute from "./routes/payment.js";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 
 // API routes
 app.use("/api/v1", registerRoute);
+app.use("/api/v1", paymentRoute);
 
 // 404 handler
 app.use((req, res) => {

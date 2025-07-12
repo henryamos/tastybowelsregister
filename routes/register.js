@@ -21,7 +21,19 @@ router.post("/register", async (req, res) => {
 
     await sendConfirmationEmail(email, firstName, phoneNumber);
 
-    res.status(201).json({ message: "Registration successful!" });
+    res.status(201).json({ 
+      success: true,
+      message: "Registration successful!", 
+      data: {
+        registrationId: participant._id,
+        firstName: participant.firstName,
+        lastName: participant.lastName,
+        email: participant.email,
+        phoneNumber: participant.phoneNumber,
+        telegramHandle: participant.telegramHandle,
+        registeredAt: participant.createdAt
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong." });

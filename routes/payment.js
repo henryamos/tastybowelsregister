@@ -73,20 +73,11 @@ router.get('/payment-qr', async (req, res) => {
     const accountNumber = process.env.ACCOUNT_NUMBER || "22774866";
     const sortCode = process.env.SORT_CODE || "52-21-18";
     
-    // Create payment data string for QR code
-    const paymentData = {
-      bankName,
-      accountName,
-      accountNumber,
-      sortCode,
-      reference: "Tasty Bowls Registration"
-    };
+    // Payment link for QR code
+    const paymentLink = "https://paymentrequest.natwestpayit.com/reusable-links/9044cee9-ccea-46fa-bf8a-3be06865157e";
     
-    // Convert to JSON string for QR code
-    const qrData = JSON.stringify(paymentData);
-    
-    // Generate QR code as PNG buffer
-    const qrBuffer = await QRCode.toBuffer(qrData, {
+    // Generate QR code as PNG buffer containing the payment link
+    const qrBuffer = await QRCode.toBuffer(paymentLink, {
       type: 'image/png',
       width: 300,
       margin: 2,
@@ -114,7 +105,7 @@ router.get('/payment-qr', async (req, res) => {
 });
 
 // GET /api/v1/payment-qr-data - Get QR code data as JSON (Public access)
-router.get('/payment-qr-data', (req, res) => {
+router.get('/payment-qr-data', async (req, res) => {
   try {
     const bankName = process.env.BANK_NAME || "NATWEST";
     const accountName = process.env.ACCOUNT_NAME || "NEXT OASIS LTD";
@@ -132,10 +123,22 @@ router.get('/payment-qr-data', (req, res) => {
       timestamp: new Date().toISOString()
     };
     
+    // Generate QR code containing the payment link
+    const qrCodeBase64 = await QRCode.toDataURL(paymentData.paymentLink, {
+      type: 'image/png',
+      width: 300,
+      margin: 2,
+      color: {
+        dark: '#2E7D32',
+        light: '#FFFFFF'
+      }
+    });
+    
     res.json({
       success: true,
       data: paymentData,
-      paymentLink: paymentData.paymentLink
+      paymentLink: paymentData.paymentLink,
+      paymentQR: qrCodeBase64
     });
   } catch (error) {
     console.error('Error getting QR data:', error);

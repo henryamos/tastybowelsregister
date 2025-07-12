@@ -31,12 +31,23 @@ router.post("/register", async (req, res) => {
       timestamp: new Date().toISOString()
     };
 
+    // Generate QR code containing the payment link
+    const qrCodeBase64 = await QRCode.toDataURL(paymentData.paymentLink, {
+      type: 'image/png',
+      width: 300,
+      margin: 2,
+      color: {
+        dark: '#2E7D32',
+        light: '#FFFFFF'
+      }
+    });
+
     // Send confirmation email
     await sendConfirmationEmail(email, firstName, phoneNumber);
 
     res.status(201).json({ 
       success: true,
-      message: "Registration successful! Payment link provided.", 
+      message: "Registration successful! Payment QR code generated.", 
       data: {
         registrationId: participant._id,
         firstName: participant.firstName,
@@ -45,6 +56,7 @@ router.post("/register", async (req, res) => {
         phoneNumber: participant.phoneNumber,
         telegramHandle: participant.telegramHandle,
         registeredAt: participant.createdAt,
+        paymentQR: qrCodeBase64,
         paymentLink: paymentData.paymentLink,
         paymentData: paymentData
       }
@@ -76,11 +88,23 @@ router.get("/registration/:id/qr", async (req, res) => {
       timestamp: new Date().toISOString()
     };
 
+    // Generate QR code containing the payment link
+    const qrCodeBase64 = await QRCode.toDataURL(paymentData.paymentLink, {
+      type: 'image/png',
+      width: 300,
+      margin: 2,
+      color: {
+        dark: '#2E7D32',
+        light: '#FFFFFF'
+      }
+    });
+
     res.json({
       success: true,
       data: {
         registrationId: participant._id,
         participantName: `${participant.firstName} ${participant.lastName}`,
+        paymentQR: qrCodeBase64,
         paymentLink: paymentData.paymentLink,
         paymentData: paymentData
       }

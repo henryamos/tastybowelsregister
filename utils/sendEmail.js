@@ -254,13 +254,12 @@ async function sendConfirmationEmail(to, firstName, phoneNumber = '') {
           <div class="payment-info">
             <h4>💳 Payment Information</h4>
             <div class="bank-details">
-              <div><strong>Bank:</strong> NATWEST</div>
-              <div><strong>Account Name:</strong> NEXT OASIS LTD</div>
-              <div><strong>Account No:</strong> 22774866</div>
-              <div><strong>Sort Code:</strong> 52-21-18</div>
+              <div><strong>Payment Link:</strong> <a href="https://paymentrequest.natwestpayit.com/reusable-links/9044cee9-ccea-46fa-bf8a-3be06865157e" style="color: #2E7D32; text-decoration: underline;">Click here to pay £100</a></div>
               <div><strong>Amount:</strong> £100</div>
+              <div><strong>Reference:</strong> Tasty Bowls - ${firstName}</div>
             </div>
             <p><strong>⚠️ Important:</strong> Payment must be completed before the class starts</p>
+            <p><strong>💡 Tip:</strong> Use the payment link above for a quick and secure payment experience</p>
           </div>
           
           <div class="contact-section">

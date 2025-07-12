@@ -46,6 +46,9 @@ router.get('/payment-details', securityCheck, (req, res) => {
     res.json({
       success: true,
       data: {
+        paymentLink: "https://paymentrequest.natwestpayit.com/reusable-links/9044cee9-ccea-46fa-bf8a-3be06865157e",
+        amount: "£100",
+        reference: "Tasty Bowls Registration",
         bankName: process.env.BANK_NAME || "NATWEST",
         accountName: process.env.ACCOUNT_NAME || "NEXT OASIS LTD",
         accountNumber: process.env.ACCOUNT_NUMBER || "22774866",
@@ -119,18 +122,20 @@ router.get('/payment-qr-data', (req, res) => {
     const sortCode = process.env.SORT_CODE || "52-21-18";
     
     const paymentData = {
+      paymentLink: "https://paymentrequest.natwestpayit.com/reusable-links/9044cee9-ccea-46fa-bf8a-3be06865157e",
+      amount: "£100",
+      reference: "Tasty Bowls Registration",
       bankName,
       accountName,
       accountNumber,
       sortCode,
-      reference: "Tasty Bowls Registration",
       timestamp: new Date().toISOString()
     };
     
     res.json({
       success: true,
       data: paymentData,
-      qrData: JSON.stringify(paymentData)
+      paymentLink: paymentData.paymentLink
     });
   } catch (error) {
     console.error('Error getting QR data:', error);
@@ -204,7 +209,8 @@ router.get('/payment-health', (req, res) => {
     message: "Payment routes are healthy",
     timestamp: new Date().toISOString(),
     features: {
-      dynamicQR: true,
+      paymentLink: true,
+      natwestPayIt: true,
       securityEnabled: {
         tokenAuth: !!process.env.SIMPLE_ACCESS_TOKEN,
         ipFiltering: !!process.env.ALLOWED_IPS

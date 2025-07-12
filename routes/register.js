@@ -20,38 +20,23 @@ router.post("/register", async (req, res) => {
 
     const participant = await Participant.create({ firstName, lastName, telegramHandle, email, phoneNumber });
 
-    // Generate QR code data for this specific registration
+    // Payment information for this specific registration
     const paymentData = {
       registrationId: participant._id,
       participantName: `${firstName} ${lastName}`,
       email: email,
-      bankName: process.env.BANK_NAME || "NATWEST",
-      accountName: process.env.ACCOUNT_NAME || "NEXT OASIS LTD",
-      accountNumber: process.env.ACCOUNT_NUMBER || "22774866",
-      sortCode: process.env.SORT_CODE || "52-21-18",
+      paymentLink: "https://paymentrequest.natwestpayit.com/reusable-links/9044cee9-ccea-46fa-bf8a-3be06865157e",
       amount: "£100",
       reference: `Tasty Bowls - ${firstName} ${lastName}`,
       timestamp: new Date().toISOString()
     };
-
-    // Generate QR code as base64 string
-    const qrDataString = JSON.stringify(paymentData);
-    const qrCodeBase64 = await QRCode.toDataURL(qrDataString, {
-      type: 'image/png',
-      width: 300,
-      margin: 2,
-      color: {
-        dark: '#2E7D32',
-        light: '#FFFFFF'
-      }
-    });
 
     // Send confirmation email
     await sendConfirmationEmail(email, firstName, phoneNumber);
 
     res.status(201).json({ 
       success: true,
-      message: "Registration successful! Payment QR code generated.", 
+      message: "Registration successful! Payment link provided.", 
       data: {
         registrationId: participant._id,
         firstName: participant.firstName,
@@ -60,7 +45,7 @@ router.post("/register", async (req, res) => {
         phoneNumber: participant.phoneNumber,
         telegramHandle: participant.telegramHandle,
         registeredAt: participant.createdAt,
-        paymentQR: qrCodeBase64,
+        paymentLink: paymentData.paymentLink,
         paymentData: paymentData
       }
     });
@@ -80,38 +65,23 @@ router.get("/registration/:id/qr", async (req, res) => {
       return res.status(404).json({ message: "Registration not found." });
     }
 
-    // Generate QR code data for this specific registration
+    // Payment information for this specific registration
     const paymentData = {
       registrationId: participant._id,
       participantName: `${participant.firstName} ${participant.lastName}`,
       email: participant.email,
-      bankName: process.env.BANK_NAME || "NATWEST",
-      accountName: process.env.ACCOUNT_NAME || "NEXT OASIS LTD",
-      accountNumber: process.env.ACCOUNT_NUMBER || "22774866",
-      sortCode: process.env.SORT_CODE || "52-21-18",
+      paymentLink: "https://paymentrequest.natwestpayit.com/reusable-links/9044cee9-ccea-46fa-bf8a-3be06865157e",
       amount: "£100",
       reference: `Tasty Bowls - ${participant.firstName} ${participant.lastName}`,
       timestamp: new Date().toISOString()
     };
-
-    // Generate QR code as base64 string
-    const qrDataString = JSON.stringify(paymentData);
-    const qrCodeBase64 = await QRCode.toDataURL(qrDataString, {
-      type: 'image/png',
-      width: 300,
-      margin: 2,
-      color: {
-        dark: '#2E7D32',
-        light: '#FFFFFF'
-      }
-    });
 
     res.json({
       success: true,
       data: {
         registrationId: participant._id,
         participantName: `${participant.firstName} ${participant.lastName}`,
-        paymentQR: qrCodeBase64,
+        paymentLink: paymentData.paymentLink,
         paymentData: paymentData
       }
     });
